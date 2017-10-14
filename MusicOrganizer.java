@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A class to hold details of audio tracks.
@@ -15,6 +16,8 @@ public class MusicOrganizer
     private MusicPlayer player;
     // A reader that can read music files and load them as tracks.
     private TrackReader reader;
+    //random feature
+    private Random randomtrack;
 
     /**
      * Create a MusicOrganizer
@@ -24,6 +27,7 @@ public class MusicOrganizer
         tracks = new ArrayList<>();
         player = new MusicPlayer();
         reader = new TrackReader();
+        randomtrack = new Random();
         readLibrary("../audio");
         System.out.println("Music library loaded. " + getNumberOfTracks() + " tracks.");
         System.out.println();
@@ -60,6 +64,63 @@ public class MusicOrganizer
         }
     }
     
+    public void playRandom()
+    {
+        Random rand = new Random();
+        int index = rand.nextInt(tracks.size());
+        playTrack(index);
+    }
+    
+    
+    public void playAllRandom()
+    {
+        Random rand = new Random();
+        int index;
+        int[] PlayList = new int[tracks.size()];
+        for (int i = 0; i < tracks.size(); i++){
+            PlayList[i] = i;
+        }
+        for (int i = tracks.size()-1; i > 0; i--){
+            index = rand.nextInt(i+1);
+            int a = PlayList[index];
+            PlayList[index] = PlayList[i];
+            PlayList[i] = a;
+        }
+        for (int i = 0; i < tracks.size(); i++){
+            System.out.println(PlayList[i]);
+            int song = PlayList[i];
+            playTrack(song);
+        }
+        
+    }
+    
+    
+    /*public void randomTrack(int index)
+    {
+        int trackNumber = getNumberOfTracks();
+        int rindex = randomtrack.nextInt(trackNumber);
+        if(indexValid(index)) {
+            Track track = tracks.get(rindex);
+            player.startPlaying(track.getFilename());
+            System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
+        }
+    }*/
+    /*
+    public void randomAllTracks(int index)
+    {
+        int trackNumber = getNumberOfTracks();
+        int rindex = randomtrack.nextInt(trackNumber);
+        if(indexValid(index)) 
+        {
+            for(Track track : tracks)    
+            {
+            //player.startPlaying(track.getFilename());
+            System.out.println("Now playing: " + track.getArtist() + " - " +   track.getTitle());
+            //System.out.println();
+            }
+        }
+    }
+    */
     /**
      * Return the number of tracks in the collection.
      * @return The number of tracks in the collection.
@@ -126,6 +187,21 @@ public class MusicOrganizer
             player.startPlaying(tracks.get(0).getFilename());
         }
     }
+    
+    
+    
+    /*public void playRandomTrack()
+    {
+        /*Random randomGenerator;
+        randomGenerator = new Random();
+        int index = randomGenerator.nextInt();
+        
+        /*if(indexValid(index)) {
+            Track track = tracks.get(index);
+            player.startPlaying(track.getFilename());
+            System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
+        }
+    }*/
     
     /**
      * Stop the player.
